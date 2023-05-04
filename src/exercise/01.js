@@ -75,16 +75,16 @@ function useUser() {
 
 function updateUser(dispatch, user, updates) {
   dispatch({type: 'start update', updates: updates})
-  userClient.updateUser(user, updates).then(
+  return userClient.updateUser(user, updates).then(
     updatedUser => dispatch({type: 'finish update', updatedUser}),
     error => dispatch({type: 'fail update', error}),
   )
 }
 
-// export {UserProvider, useUser}
+// export {UserProvider, useUser, updateUser}
 
 // src/screens/user-profile.js
-// import {UserProvider, useUser} from './context/user-context'
+// import {UserProvider, useUser, updateUser} from './context/user-context'
 function UserSettings() {
   const [{user, status, error}, userDispatch] = useUser()
 
