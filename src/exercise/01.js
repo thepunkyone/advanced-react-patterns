@@ -73,12 +73,18 @@ function useUser() {
   return context
 }
 
-function updateUser(dispatch, user, updates) {
+async function updateUser(dispatch, user, updates) {
   dispatch({type: 'start update', updates: updates})
-  return userClient.updateUser(user, updates).then(
-    updatedUser => dispatch({type: 'finish update', updatedUser}),
-    error => dispatch({type: 'fail update', error}),
-  )
+
+  try {
+    const updatedUser = await userClient.updateUser(user, updates)
+    dispatch({type: 'finish update', updatedUser})
+    return updatedUser
+  }
+  catch (error) {
+    dispatch({type: 'fail update', error})
+    return Promise.reject(error)
+  }
 }
 
 // export {UserProvider, useUser, updateUser}
@@ -99,9 +105,11 @@ function UserSettings() {
     setFormState({...formState, [e.target.name]: e.target.value})
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    updateUser(userDispatch, user, formState)
+    await updateUser(userDispatch, user, formState).catch(() => {
+      /* ignore the error */
+    })
   }
 
   return (
