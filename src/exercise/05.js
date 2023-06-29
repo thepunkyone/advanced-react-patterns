@@ -3,29 +3,30 @@
 
 import * as React from 'react'
 import {Switch} from '../switch'
+import {act} from '@testing-library/react'
 
 const callAll =
   (...fns) =>
   (...args) =>
     fns.forEach(fn => fn?.(...args))
 
+const actionTypes = {
+  toggle: 'toggle',
+  reset: 'reset',
+}
+
 function toggleReducer(state, {type, initialState}) {
   switch (type) {
-    case 'toggle': {
+    case actionTypes.toggle: {
       return {on: !state.on}
     }
-    case 'reset': {
+    case actionTypes.reset: {
       return initialState
     }
     default: {
       throw new Error(`Unsupported type: ${type}`)
     }
   }
-}
-
-const actionTypes = {
-  toggle: 'toggle',
-  reset: 'reset',
 }
 
 function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
