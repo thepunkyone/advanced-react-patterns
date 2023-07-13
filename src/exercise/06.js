@@ -97,7 +97,7 @@ function useToggle({
     controlPropValue: controlledOn,
     controlPropName: 'on',
     defaultPropName: 'initialOn',
-    componentName: 'Toggle',
+    componentName: 'useToggle',
     readOnly,
     onChange,
   })
