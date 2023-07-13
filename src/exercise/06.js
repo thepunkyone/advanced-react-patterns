@@ -38,7 +38,7 @@ const useControlledChangesWarning = ({
   onChange,
 }) => {
   const isControlled = controlPropValue !== null
-  const wasControlled = React.useRef(isControlled)
+  const {current: wasControlled} = React.useRef(isControlled)
 
   React.useEffect(() => {
     const doNotWarnAboutMissingOnChangeHandler =
@@ -46,13 +46,13 @@ const useControlledChangesWarning = ({
       !isControlled ||
       (isControlled && typeof onChange === 'function')
 
-    const doNotWarnAboutChangeFromUncontrolledToControlledComponent =
-      isControlled ? isControlled === wasControlled.current : true
+    const doNotWarnAboutChangeFromUncontrolledToControlledComponent = !(
+      isControlled && !wasControlled
+    )
 
-    const doNotWarnAboutChangeFromControlledToUncontrolledComponent =
-      !isControlled ? isControlled === wasControlled.current : true
-
-    wasControlled.current = isControlled
+    const doNotWarnAboutChangeFromControlledToUncontrolledComponent = !(
+      !isControlled && wasControlled
+    )
 
     warning(
       doNotWarnAboutMissingOnChangeHandler,
@@ -70,6 +70,7 @@ const useControlledChangesWarning = ({
     )
   }, [
     isControlled,
+    wasControlled,
     controlPropName,
     defaultPropName,
     componentName,
