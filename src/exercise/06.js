@@ -83,7 +83,7 @@ function useToggle({
   reducer = toggleReducer,
   onChange,
   on: controlledOn = null,
-  readOnly,
+  readOnly = false,
 } = {}) {
   const {current: initialState} = React.useRef({on: initialOn})
   const [state, dispatch] = React.useReducer(reducer, initialState)
