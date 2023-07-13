@@ -2,8 +2,8 @@ import * as React from 'react'
 import {alfredTip} from '@kentcdodds/react-workshop-app/test-utils'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Toggle} from '../final/06.extra-4'
-// import {Toggle} from '../exercise/06'
+// import {Toggle} from '../final/06.extra-4'
+import {Toggle} from '../exercise/06'
 
 beforeEach(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -57,6 +57,7 @@ test('warning for changing from controlled to uncontrolled', async () => {
     const [state, setState] = React.useState(true)
     return <Toggle on={state} onChange={() => setState(undefined)} />
   }
+
   render(<Example />)
   await userEvent.click(screen.getByLabelText(/toggle/i))
   alfredTip(
@@ -73,6 +74,7 @@ test('warning for changing from uncontrolled to controlled', async () => {
     const [state, setState] = React.useState(undefined)
     return <Toggle on={state} onChange={() => setState(true)} />
   }
+
   render(<Example />)
   await userEvent.click(screen.getByLabelText(/toggle/i))
   alfredTip(
